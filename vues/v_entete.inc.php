@@ -25,14 +25,18 @@ $grade = getGrade($recupMat[0][3]);
     </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="index.php?uc=accueil&action=pageAccueil">GSB</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<div class="container-fluid">
+
+        <a class="navbar-brand" href="index.php?uc=accueil&action=pageAccueil">
+            <img src="assets/images/logo.png" alt="Logo GSB" height="40">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav me-auto">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="index.php?uc=accueil&action=pageAccueil">Accueil</a>
         </li>
@@ -42,30 +46,44 @@ $grade = getGrade($recupMat[0][3]);
         <li class="nav-item">
           <a class="nav-link" href="index.php?uc=rapport&action=voirLesMedicaments">Medicament</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="index.php?uc=rapport&action=ajouterRapportVis">Saisie Rapport Visite</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="index.php?uc=rapport&action=affiInfoPratRapport">Rapport de visite</a>
-        </li>
+        <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownRapports" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Rapports
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownRapports">
+                        <li><a class="dropdown-item" href="index.php?uc=rapport&action=ajouterRapportVis">Saisir un Rapport</a></li>
+                        <li><a class="dropdown-item" href="index.php?uc=rapport&action=affiInfoPratRapport">Rechercher un Rapport</a></li>
+                    </ul>
+                </li>
 
         <?php if (isset($grade)&&$grade[0][0] == 5) : ?>
-        <li class="nav-item">
-          <a class="nav-link" href="index.php?uc=creerCompte&action=creerCompte">Création de compte</a>
-        </li>
+          <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Comptes
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <li><a class="dropdown-item" href="index.php?uc=creerCompte&action=creerCompte">Création de compte</a></li>
+                        <li><a class="dropdown-item" href="index.php?uc=connexion&action=listeCompte">Liste de comptes</a></li>
+                    </ul>
+                </li>
         <?php endif; ?>
         <?php if (isset($grade)&&$grade[0][0] == 2) : ?>
           <li class="nav-item">
             <a class="nav-link" href="index.php?uc=rapport&action=affiInfoPratRapTout"> rapport de visite par region </a>
           </li>
         <?php endif; ?>
+      </ul>
+      <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link" href="index.php?uc=connexion&action=deconnexion">Deconnexion</a>
+          <a class="nav-link" href="index.php?uc=connexion&action=deconnexion">Déconnexion</a>
         </li>
       </ul>
     </div>
   </div>
 </nav>
+
 
 </body>
 </html>

@@ -28,6 +28,12 @@ switch($action)
 	}
 	break;
 
+	case 'listeCompte':
+		{
+			include_once("vues/v_listeCompte.php");
+		}
+		break;
+
 	case 'Verification':
 	{
 		$info=VerifyUt($_POST['mail']);

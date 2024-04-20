@@ -432,3 +432,21 @@ function getPraNum($t){
         die();
         }
     }
+
+    function getInfComptes(){
+        try 
+        {
+        $monPdo = connexionPDO();
+        $stm = $monPdo -> prepare("SELECT c.id_Co, c.Mail_co, g.type_Grade AS grade, c.mat_vis 
+                                    FROM compte c
+                                    INNER JOIN grade g ON c.grade = g.id_Grade " );
+        $stm -> execute();
+        $LG=$stm->fetchAll();
+        return $LG;
+        }  
+        catch (PDOException $e) 
+        {
+        print "Erreur !: " . $e->getMessage();
+        die();
+        }
+    }

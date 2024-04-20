@@ -25,19 +25,12 @@ form {
 
 /* Full-width inputs */
 input[type=text], input[type=password] {
-    width: 200px;
+    width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
     display: inline-block;
     border: 1px solid #ccc;
     box-sizing: border-box;
-    height: 30px;
-}
-
-input[type=email]{
-    height: 30px;
-    width: 200px;
-    display: inline-block;
 }
 
 /* Set a style for all buttons */
@@ -79,4 +72,28 @@ input[type=checkbox]:checked ~ .listRemplacant{
 
 .autreMotif{
     display: none;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: #ffffff; /* Fond blanc pour le tableau */
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #ddd;
 }
