@@ -1,0 +1,75 @@
+body{
+    
+    background-image: url(assets/images/background.jpg);
+}
+#container{
+    width:400px;
+    margin:0 auto;
+    margin-top:10%;
+    
+}
+/* Bordered form */
+form {
+    width:100%;
+    padding: 30px;
+    border: 1px solid #f1f1f1;
+    background: #fff;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    border-radius: 10px;
+}
+#container h1{
+    width: 38%;
+    margin: 0 auto;
+    padding-bottom: 10px;
+}
+
+/* Full-width inputs */
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+/* Set a style for all buttons */
+input[type=submit] {
+    background-color: #2E7EF1;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+input[type=submit]:hover {
+    color: #53af57;
+    border: 1px solid #2E7EF1;
+}
+
+
+.listRemplacant{
+    display: none;
+}
+
+input[type=checkbox]:checked ~ .listRemplacant{
+    display: block;
+}
+
+#bilanRap{
+    height: 100px;
+}
+
+#qteEchantillion{
+    width: 20px;
+    height: 15px;
+}
+
+.red{
+    color: red;
+}
+
+.autreMotif{
+    display: none;
+}
