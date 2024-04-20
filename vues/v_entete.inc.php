@@ -27,7 +27,7 @@ $grade = getGrade($recupMat[0][3]);
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand" href="index.php?uc=accueil&action=accueil">GSB</a>
+    <a class="navbar-brand" href="index.php?uc=accueil&action=pageAccueil">GSB</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -48,6 +48,12 @@ $grade = getGrade($recupMat[0][3]);
         <li class="nav-item">
           <a class="nav-link" href="index.php?uc=rapport&action=affiInfoPratRapport">Rapport de visite</a>
         </li>
+
+        <?php if (isset($grade)&&$grade[0][0] == 5) : ?>
+        <li class="nav-item">
+          <a class="nav-link" href="index.php?uc=creerCompte&action=creerCompte">Création de compte</a>
+        </li>
+        <?php endif; ?>
         <?php if (isset($grade)&&$grade[0][0] == 2) : ?>
           <li class="nav-item">
             <a class="nav-link" href="index.php?uc=rapport&action=affiInfoPratRapTout"> rapport de visite par region </a>

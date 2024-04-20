@@ -25,12 +25,19 @@ form {
 
 /* Full-width inputs */
 input[type=text], input[type=password] {
-    width: 100%;
+    width: 200px;
     padding: 12px 20px;
     margin: 8px 0;
     display: inline-block;
     border: 1px solid #ccc;
     box-sizing: border-box;
+    height: 30px;
+}
+
+input[type=email]{
+    height: 30px;
+    width: 200px;
+    display: inline-block;
 }
 
 /* Set a style for all buttons */

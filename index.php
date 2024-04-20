@@ -46,6 +46,9 @@ switch($uc)
         include("controleur/c_gestionRapport.php");
     }
     break;
+    case 'creerCompte': {
+        include("controleur/c_ConnexionGsb.php");
+    }
 }
 include("vues/v_piedpage.inc.php") ;
 ?>

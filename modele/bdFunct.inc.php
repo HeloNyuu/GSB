@@ -417,3 +417,18 @@ function getPraNum($t){
         die();
         }
     }
+    function getListGrade(){
+        try 
+        {
+        $monPdo = connexionPDO();
+        $stm = $monPdo -> prepare("SELECT * FROM  grade " );
+        $stm -> execute();
+        $LG=$stm->fetchAll();
+        return $LG;
+        }  
+        catch (PDOException $e) 
+        {
+        print "Erreur !: " . $e->getMessage();
+        die();
+        }
+    }

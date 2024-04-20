@@ -4,7 +4,7 @@
         <header class="bg-dark py-5">
             <div class="container px-4 px-lg-5 my-5 mt-4">
                 <div class="text-center text-white">
-                    <p class="display-4 fw-bolder ">Sélectionnez entre quelles dates vous voulez consulter les rapports de visite </p>
+                    <p class="display-4 fw-bolder ">Sélectionnez la période souhaitée </p>
                       
 				    
                 </div>
