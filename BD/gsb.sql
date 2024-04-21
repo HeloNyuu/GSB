@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1
--- Généré le : sam. 20 avr. 2024 à 14:57
--- Version du serveur : 10.4.28-MariaDB
--- Version de PHP : 8.2.4
+-- Hôte : 127.0.0.1:3306
+-- Généré le : dim. 21 avr. 2024 à 17:33
+-- Version du serveur : 8.2.0
+-- Version de PHP : 8.2.13
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -27,13 +27,15 @@ SET time_zone = "+00:00";
 -- Structure de la table `activite_compl`
 --
 
-CREATE TABLE `activite_compl` (
-  `AC_NUM` int(11) NOT NULL,
+DROP TABLE IF EXISTS `activite_compl`;
+CREATE TABLE IF NOT EXISTS `activite_compl` (
+  `AC_NUM` int NOT NULL AUTO_INCREMENT,
   `AC_DATE` datetime DEFAULT NULL,
   `AC_LIEU` varchar(25) DEFAULT NULL,
   `AC_THEME` varchar(10) DEFAULT NULL,
-  `AC_MOTIF` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `AC_MOTIF` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`AC_NUM`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -41,10 +43,12 @@ CREATE TABLE `activite_compl` (
 -- Structure de la table `composant`
 --
 
-CREATE TABLE `composant` (
+DROP TABLE IF EXISTS `composant`;
+CREATE TABLE IF NOT EXISTS `composant` (
   `CMP_CODE` varchar(4) NOT NULL,
-  `CMP_LIBELLE` varchar(25) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `CMP_LIBELLE` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`CMP_CODE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -52,13 +56,16 @@ CREATE TABLE `composant` (
 -- Structure de la table `compte`
 --
 
-CREATE TABLE `compte` (
-  `id_Co` int(11) NOT NULL,
-  `Mdp_co` varchar(255) NOT NULL,
-  `Mail_co` varchar(50) NOT NULL,
-  `grade` int(11) DEFAULT NULL,
-  `mat_vis` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+DROP TABLE IF EXISTS `compte`;
+CREATE TABLE IF NOT EXISTS `compte` (
+  `id_Co` int NOT NULL AUTO_INCREMENT,
+  `Mdp_co` varchar(255) COLLATE utf8mb3_bin NOT NULL,
+  `Mail_co` varchar(50) COLLATE utf8mb3_bin NOT NULL,
+  `grade` int DEFAULT NULL,
+  `mat_vis` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
+  PRIMARY KEY (`id_Co`),
+  KEY `fk_compte` (`mat_vis`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 
 --
 -- Déchargement des données de la table `compte`
@@ -69,8 +76,7 @@ INSERT INTO `compte` (`id_Co`, `Mdp_co`, `Mail_co`, `grade`, `mat_vis`) VALUES
 (2, '$2y$10$hnn.RRg76ARVFSJE70D4y.pNpj1izYHeZWa7CNUfv6nmMzSfSDoKm', 'zak.dbz@hotmail.fr', 5, 'i13'),
 (3, '$2y$10$Ad8dVjCvFXxulv71wkMbTel1JlWl71kX7SydyW3OOLcMTAeCBSZ9m', 'villechalane.louis@hotmail.fr', 5, 'a131'),
 (4, '$2y$10$wEjF5n.OuwpsHnvVvtOUZ.4WVr04eM7td11YfRKXgmqqHfF1giYpi', 'heloise21@live.fr', 5, 'a17'),
-(5, '$2y$10$Ad8dVjCvFXxulv71wkMbTel1JlWl71kX7SydyW3OOLcMTAeCBSZ9m', 'charoze.catherine@hotmail.fr', 2, 'b4'),
-(6, '$2y$10$5NscMf0unXSNRu5COQbnrOk7gxXAHasjNHlFRnkdSbOlQKvWxy7ju', 'test.test@test.com', 2, 'ii23');
+(5, '$2y$10$Ad8dVjCvFXxulv71wkMbTel1JlWl71kX7SydyW3OOLcMTAeCBSZ9m', 'charoze.catherine@hotmail.fr', 2, 'b4');
 
 -- --------------------------------------------------------
 
@@ -78,11 +84,15 @@ INSERT INTO `compte` (`id_Co`, `Mdp_co`, `Mail_co`, `grade`, `mat_vis`) VALUES
 -- Structure de la table `constituer`
 --
 
-CREATE TABLE `constituer` (
+DROP TABLE IF EXISTS `constituer`;
+CREATE TABLE IF NOT EXISTS `constituer` (
   `MED_DEPOTLEGAL` varchar(10) NOT NULL,
   `CMP_CODE` varchar(4) NOT NULL,
-  `CST_QTE` float DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `CST_QTE` float DEFAULT NULL,
+  PRIMARY KEY (`MED_DEPOTLEGAL`,`CMP_CODE`),
+  KEY `MED_DEPOTLEGAL` (`MED_DEPOTLEGAL`),
+  KEY `CMP_CODE` (`CMP_CODE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -90,9 +100,11 @@ CREATE TABLE `constituer` (
 -- Structure de la table `date`
 --
 
-CREATE TABLE `date` (
-  `JJMMAA` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+DROP TABLE IF EXISTS `date`;
+CREATE TABLE IF NOT EXISTS `date` (
+  `JJMMAA` date NOT NULL,
+  PRIMARY KEY (`JJMMAA`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 
 -- --------------------------------------------------------
 
@@ -100,11 +112,13 @@ CREATE TABLE `date` (
 -- Structure de la table `departement`
 --
 
-CREATE TABLE `departement` (
-  `dep_code` int(11) NOT NULL,
-  `dep_nom` varchar(50) NOT NULL,
-  `dep_chefvente` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+DROP TABLE IF EXISTS `departement`;
+CREATE TABLE IF NOT EXISTS `departement` (
+  `dep_code` int NOT NULL,
+  `dep_nom` varchar(50) COLLATE utf8mb3_bin NOT NULL,
+  `dep_chefvente` varchar(50) COLLATE utf8mb3_bin NOT NULL,
+  PRIMARY KEY (`dep_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 
 -- --------------------------------------------------------
 
@@ -112,11 +126,13 @@ CREATE TABLE `departement` (
 -- Structure de la table `dosage`
 --
 
-CREATE TABLE `dosage` (
+DROP TABLE IF EXISTS `dosage`;
+CREATE TABLE IF NOT EXISTS `dosage` (
   `DOS_CODE` varchar(10) NOT NULL,
   `DOS_QUANTITE` varchar(10) DEFAULT NULL,
-  `DOS_UNITE` varchar(10) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `DOS_UNITE` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`DOS_CODE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -124,10 +140,12 @@ CREATE TABLE `dosage` (
 -- Structure de la table `famille`
 --
 
-CREATE TABLE `famille` (
+DROP TABLE IF EXISTS `famille`;
+CREATE TABLE IF NOT EXISTS `famille` (
   `FAM_CODE` varchar(3) NOT NULL,
-  `FAM_LIBELLE` varchar(80) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `FAM_LIBELLE` varchar(80) DEFAULT NULL,
+  PRIMARY KEY (`FAM_CODE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Déchargement des données de la table `famille`
@@ -161,12 +179,14 @@ INSERT INTO `famille` (`FAM_CODE`, `FAM_LIBELLE`) VALUES
 -- Structure de la table `fiche_frais`
 --
 
-CREATE TABLE `fiche_frais` (
-  `vis_matricule` int(11) NOT NULL,
-  `ff_mois` int(11) NOT NULL,
-  `ff_NBHorsClassif` int(11) NOT NULL,
-  `ff_MontantHorsClassif` float NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+DROP TABLE IF EXISTS `fiche_frais`;
+CREATE TABLE IF NOT EXISTS `fiche_frais` (
+  `vis_matricule` int NOT NULL,
+  `ff_mois` int NOT NULL,
+  `ff_NBHorsClassif` int NOT NULL,
+  `ff_MontantHorsClassif` float NOT NULL,
+  PRIMARY KEY (`vis_matricule`,`ff_mois`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 
 -- --------------------------------------------------------
 
@@ -174,10 +194,14 @@ CREATE TABLE `fiche_frais` (
 -- Structure de la table `formuler`
 --
 
-CREATE TABLE `formuler` (
+DROP TABLE IF EXISTS `formuler`;
+CREATE TABLE IF NOT EXISTS `formuler` (
   `MED_DEPOTLEGAL` varchar(10) NOT NULL,
-  `PRE_CODE` varchar(2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `PRE_CODE` varchar(2) NOT NULL,
+  PRIMARY KEY (`MED_DEPOTLEGAL`,`PRE_CODE`),
+  KEY `MED_DEPOTLEGAL` (`MED_DEPOTLEGAL`),
+  KEY `PRE_CODE` (`PRE_CODE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -185,10 +209,21 @@ CREATE TABLE `formuler` (
 -- Structure de la table `grade`
 --
 
-CREATE TABLE `grade` (
-  `id_Grade` int(11) NOT NULL,
-  `type_Grade` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+DROP TABLE IF EXISTS `grade`;
+CREATE TABLE IF NOT EXISTS `grade` (
+  `id_Grade` int NOT NULL AUTO_INCREMENT,
+  `type_Grade` varchar(50) COLLATE utf8mb3_bin NOT NULL,
+  PRIMARY KEY (`id_Grade`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
+
+--
+-- Déchargement des données de la table `grade`
+--
+
+INSERT INTO `grade` (`id_Grade`, `type_Grade`) VALUES
+(1, 'Visiteur'),
+(2, 'Visiteur délégué'),
+(5, 'Administrateur');
 
 -- --------------------------------------------------------
 
@@ -196,13 +231,16 @@ CREATE TABLE `grade` (
 -- Structure de la table `inclure`
 --
 
-CREATE TABLE `inclure` (
-  `vis_matricule` int(11) NOT NULL,
-  `ff_mois` int(11) NOT NULL,
-  `tf_code` int(11) NOT NULL,
-  `inc_qte` int(11) NOT NULL,
-  `inc_montant` float NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+DROP TABLE IF EXISTS `inclure`;
+CREATE TABLE IF NOT EXISTS `inclure` (
+  `vis_matricule` int NOT NULL,
+  `ff_mois` int NOT NULL,
+  `tf_code` int NOT NULL,
+  `inc_qte` int NOT NULL,
+  `inc_montant` float NOT NULL,
+  PRIMARY KEY (`vis_matricule`,`ff_mois`,`tf_code`),
+  KEY `inclure_type_frais1_FK` (`tf_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 
 -- --------------------------------------------------------
 
@@ -210,10 +248,14 @@ CREATE TABLE `inclure` (
 -- Structure de la table `interagir`
 --
 
-CREATE TABLE `interagir` (
+DROP TABLE IF EXISTS `interagir`;
+CREATE TABLE IF NOT EXISTS `interagir` (
   `MED_PERTURBATEUR` varchar(10) NOT NULL,
-  `MED_MED_PERTURBE` varchar(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `MED_MED_PERTURBE` varchar(10) NOT NULL,
+  PRIMARY KEY (`MED_PERTURBATEUR`,`MED_MED_PERTURBE`),
+  KEY `MED_MED_PERTURBE` (`MED_MED_PERTURBE`),
+  KEY `MED_PERTURBATEUR` (`MED_PERTURBATEUR`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -221,11 +263,15 @@ CREATE TABLE `interagir` (
 -- Structure de la table `inviter`
 --
 
-CREATE TABLE `inviter` (
-  `AC_NUM` int(11) NOT NULL,
-  `PRA_NUM` int(11) NOT NULL,
-  `SPECIALISTEON` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+DROP TABLE IF EXISTS `inviter`;
+CREATE TABLE IF NOT EXISTS `inviter` (
+  `AC_NUM` int NOT NULL,
+  `PRA_NUM` int NOT NULL,
+  `SPECIALISTEON` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`AC_NUM`,`PRA_NUM`),
+  KEY `AC_NUM` (`AC_NUM`),
+  KEY `PRA_NUM` (`PRA_NUM`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -233,15 +279,18 @@ CREATE TABLE `inviter` (
 -- Structure de la table `medicament`
 --
 
-CREATE TABLE `medicament` (
+DROP TABLE IF EXISTS `medicament`;
+CREATE TABLE IF NOT EXISTS `medicament` (
   `MED_DEPOTLEGAL` varchar(10) NOT NULL,
   `MED_NOMCOMMERCIAL` varchar(25) DEFAULT NULL,
   `FAM_CODE` varchar(3) NOT NULL,
   `MED_COMPOSITION` varchar(255) DEFAULT NULL,
   `MED_EFFETS` varchar(255) DEFAULT NULL,
   `MED_CONTREINDIC` varchar(255) DEFAULT NULL,
-  `MED_PRIXECHANTILLON` float DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `MED_PRIXECHANTILLON` float DEFAULT NULL,
+  PRIMARY KEY (`MED_DEPOTLEGAL`),
+  KEY `FAM_CODE` (`FAM_CODE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Déchargement des données de la table `medicament`
@@ -280,10 +329,12 @@ INSERT INTO `medicament` (`MED_DEPOTLEGAL`, `MED_NOMCOMMERCIAL`, `FAM_CODE`, `ME
 -- Structure de la table `motif`
 --
 
-CREATE TABLE `motif` (
-  `id_motif` int(11) NOT NULL,
-  `libelle_motif` varchar(250) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+DROP TABLE IF EXISTS `motif`;
+CREATE TABLE IF NOT EXISTS `motif` (
+  `id_motif` int NOT NULL AUTO_INCREMENT,
+  `libelle_motif` varchar(250) COLLATE utf8mb3_bin NOT NULL,
+  PRIMARY KEY (`id_motif`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 
 --
 -- Déchargement des données de la table `motif`
@@ -300,12 +351,16 @@ INSERT INTO `motif` (`id_motif`, `libelle_motif`) VALUES
 -- Structure de la table `offrir`
 --
 
-CREATE TABLE `offrir` (
+DROP TABLE IF EXISTS `offrir`;
+CREATE TABLE IF NOT EXISTS `offrir` (
   `VIS_MATRICULE` varchar(10) NOT NULL,
-  `RAP_NUM` int(11) NOT NULL,
+  `RAP_NUM` int NOT NULL,
   `MED_DEPOTLEGAL` varchar(10) NOT NULL,
-  `OFF_QTE` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `OFF_QTE` int DEFAULT NULL,
+  PRIMARY KEY (`VIS_MATRICULE`,`RAP_NUM`,`MED_DEPOTLEGAL`),
+  KEY `MED_DEPOTLEGAL` (`MED_DEPOTLEGAL`),
+  KEY `VIS_MATRICULE` (`VIS_MATRICULE`,`RAP_NUM`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Déchargement des données de la table `offrir`
@@ -314,6 +369,7 @@ CREATE TABLE `offrir` (
 INSERT INTO `offrir` (`VIS_MATRICULE`, `RAP_NUM`, `MED_DEPOTLEGAL`, `OFF_QTE`) VALUES
 ('a131', 153, 'EVEILLOR', 2),
 ('a131', 154, 'EVEILLOR', 2),
+('a17', 157, 'LIDOXYTRAC', 1),
 ('i13', 156, 'JOVENIL', 56);
 
 -- --------------------------------------------------------
@@ -322,12 +378,16 @@ INSERT INTO `offrir` (`VIS_MATRICULE`, `RAP_NUM`, `MED_DEPOTLEGAL`, `OFF_QTE`) V
 -- Structure de la table `posseder`
 --
 
-CREATE TABLE `posseder` (
-  `PRA_NUM` int(11) NOT NULL,
+DROP TABLE IF EXISTS `posseder`;
+CREATE TABLE IF NOT EXISTS `posseder` (
+  `PRA_NUM` int NOT NULL,
   `SPE_CODE` varchar(5) NOT NULL,
   `POS_DIPLOME` varchar(10) DEFAULT NULL,
-  `POS_COEFPRESCRIPTION` float DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `POS_COEFPRESCRIPTION` float DEFAULT NULL,
+  PRIMARY KEY (`PRA_NUM`,`SPE_CODE`),
+  KEY `PRA_NUM` (`PRA_NUM`),
+  KEY `SPE_CODE` (`SPE_CODE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -335,16 +395,19 @@ CREATE TABLE `posseder` (
 -- Structure de la table `praticien`
 --
 
-CREATE TABLE `praticien` (
-  `PRA_NUM` int(11) NOT NULL,
+DROP TABLE IF EXISTS `praticien`;
+CREATE TABLE IF NOT EXISTS `praticien` (
+  `PRA_NUM` int NOT NULL,
   `PRA_NOM` varchar(25) DEFAULT NULL,
   `PRA_PRENOM` varchar(30) DEFAULT NULL,
   `PRA_ADRESSE` varchar(50) DEFAULT NULL,
   `PRA_CP` varchar(5) DEFAULT NULL,
   `PRA_VILLE` varchar(25) DEFAULT NULL,
   `PRA_COEFNOTORIETE` float DEFAULT NULL,
-  `TYP_CODE` varchar(3) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `TYP_CODE` varchar(3) NOT NULL,
+  PRIMARY KEY (`PRA_NUM`),
+  KEY `TYP_CODE` (`TYP_CODE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Déchargement des données de la table `praticien`
@@ -444,12 +507,17 @@ INSERT INTO `praticien` (`PRA_NUM`, `PRA_NOM`, `PRA_PRENOM`, `PRA_ADRESSE`, `PRA
 -- Structure de la table `prescrire`
 --
 
-CREATE TABLE `prescrire` (
+DROP TABLE IF EXISTS `prescrire`;
+CREATE TABLE IF NOT EXISTS `prescrire` (
   `MED_DEPOTLEGAL` varchar(10) NOT NULL,
   `TIN_CODE` varchar(5) NOT NULL,
   `DOS_CODE` varchar(10) NOT NULL,
-  `PRE_POSOLOGIE` varchar(40) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `PRE_POSOLOGIE` varchar(40) DEFAULT NULL,
+  PRIMARY KEY (`MED_DEPOTLEGAL`,`TIN_CODE`,`DOS_CODE`),
+  KEY `MED_DEPOTLEGAL` (`MED_DEPOTLEGAL`),
+  KEY `TIN_CODE` (`TIN_CODE`),
+  KEY `DOS_CODE` (`DOS_CODE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -457,10 +525,12 @@ CREATE TABLE `prescrire` (
 -- Structure de la table `presentation`
 --
 
-CREATE TABLE `presentation` (
+DROP TABLE IF EXISTS `presentation`;
+CREATE TABLE IF NOT EXISTS `presentation` (
   `PRE_CODE` varchar(2) NOT NULL,
-  `PRE_LIBELLE` varchar(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `PRE_LIBELLE` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`PRE_CODE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -468,13 +538,15 @@ CREATE TABLE `presentation` (
 -- Structure de la table `presente`
 --
 
-CREATE TABLE `presente` (
-  `id` int(11) NOT NULL,
-  `VIS_MATRICULE` varchar(20) DEFAULT NULL,
-  `RAP_NUM` int(11) DEFAULT NULL,
-  `produit1` varchar(25) DEFAULT NULL,
-  `produit2` varchar(25) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+DROP TABLE IF EXISTS `presente`;
+CREATE TABLE IF NOT EXISTS `presente` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `VIS_MATRICULE` varchar(20) COLLATE utf8mb3_bin DEFAULT NULL,
+  `RAP_NUM` int DEFAULT NULL,
+  `produit1` varchar(25) COLLATE utf8mb3_bin DEFAULT NULL,
+  `produit2` varchar(25) COLLATE utf8mb3_bin DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 
 --
 -- Déchargement des données de la table `presente`
@@ -484,7 +556,8 @@ INSERT INTO `presente` (`id`, `VIS_MATRICULE`, `RAP_NUM`, `produit1`, `produit2`
 (45, 'a131', 155, 'AMOPIL', 'EQUILAR'),
 (44, 'a131', 154, 'BACTIGEL', 'EVEILLOR'),
 (43, 'a131', 153, 'BACTIGEL', 'EVEILLOR'),
-(46, '', 156, 'NORMADOR', 'JOVENIL');
+(46, '', 156, 'NORMADOR', 'JOVENIL'),
+(47, 'a17', 157, 'AMOXAR', 'JOVENIL');
 
 -- --------------------------------------------------------
 
@@ -492,16 +565,21 @@ INSERT INTO `presente` (`id`, `VIS_MATRICULE`, `RAP_NUM`, `produit1`, `produit2`
 -- Structure de la table `rapport_visite`
 --
 
-CREATE TABLE `rapport_visite` (
+DROP TABLE IF EXISTS `rapport_visite`;
+CREATE TABLE IF NOT EXISTS `rapport_visite` (
   `VIS_MATRICULE` varchar(10) NOT NULL,
-  `RAP_NUM` int(11) NOT NULL,
-  `PRA_NUM` int(11) NOT NULL,
+  `RAP_NUM` int NOT NULL AUTO_INCREMENT,
+  `PRA_NUM` int NOT NULL,
   `remplacant` varchar(255) NOT NULL,
   `RAP_DATE` datetime DEFAULT NULL,
   `RAP_BILAN` varchar(255) DEFAULT NULL,
   `RAP_MOTIF` varchar(255) DEFAULT NULL,
-  `saisieDef` varchar(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `saisieDef` varchar(11) DEFAULT NULL,
+  PRIMARY KEY (`VIS_MATRICULE`,`RAP_NUM`),
+  KEY `PRA_NUM` (`PRA_NUM`),
+  KEY `VIS_MATRICULE` (`VIS_MATRICULE`),
+  KEY `RAP_NUM` (`RAP_NUM`)
+) ENGINE=InnoDB AUTO_INCREMENT=158 DEFAULT CHARSET=utf8mb3;
 
 --
 -- Déchargement des données de la table `rapport_visite`
@@ -517,7 +595,8 @@ INSERT INTO `rapport_visite` (`VIS_MATRICULE`, `RAP_NUM`, `PRA_NUM`, `remplacant
 ('a131', 153, 3, 'Aucun', '2022-04-30 16:47:00', 'test', 'Actualisation', 'non'),
 ('a131', 154, 3, 'Aucun', '2022-04-30 16:47:00', 'test', 'Actualisation', 'non'),
 ('a131', 155, 6, 'Aucun', '2022-04-30 16:54:00', 'bilan complet', 'Rapport', 'oui'),
-('a17', 4, 4, 'Aucun', '2003-05-21 00:00:00', 'Changement de direction, redéfinition de la politique médicamenteuse, recours au générique', 'Baisse activité', 'non');
+('a17', 4, 4, 'Aucun', '2003-05-21 00:00:00', 'Changement de direction, redéfinition de la politique médicamenteuse, recours au générique', 'Baisse activité', 'non'),
+('a17', 157, 7, 'Aucun', '2024-04-18 15:31:00', 'RAS', 'Baisse', 'non');
 
 -- --------------------------------------------------------
 
@@ -525,11 +604,15 @@ INSERT INTO `rapport_visite` (`VIS_MATRICULE`, `RAP_NUM`, `PRA_NUM`, `remplacant
 -- Structure de la table `realiser`
 --
 
-CREATE TABLE `realiser` (
-  `AC_NUM` int(11) NOT NULL,
+DROP TABLE IF EXISTS `realiser`;
+CREATE TABLE IF NOT EXISTS `realiser` (
+  `AC_NUM` int NOT NULL,
   `VIS_MATRICULE` varchar(10) NOT NULL,
-  `REA_MTTFRAIS` float DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `REA_MTTFRAIS` float DEFAULT NULL,
+  PRIMARY KEY (`AC_NUM`,`VIS_MATRICULE`),
+  KEY `AC_NUM` (`AC_NUM`),
+  KEY `VIS_MATRICULE` (`VIS_MATRICULE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -537,11 +620,14 @@ CREATE TABLE `realiser` (
 -- Structure de la table `region`
 --
 
-CREATE TABLE `region` (
+DROP TABLE IF EXISTS `region`;
+CREATE TABLE IF NOT EXISTS `region` (
   `REG_CODE` varchar(2) NOT NULL,
   `SEC_CODE` varchar(1) NOT NULL,
-  `REG_NOM` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `REG_NOM` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`REG_CODE`),
+  KEY `SEC_CODE` (`SEC_CODE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Déchargement des données de la table `region`
@@ -577,10 +663,12 @@ INSERT INTO `region` (`REG_CODE`, `SEC_CODE`, `REG_NOM`) VALUES
 -- Structure de la table `secteur`
 --
 
-CREATE TABLE `secteur` (
+DROP TABLE IF EXISTS `secteur`;
+CREATE TABLE IF NOT EXISTS `secteur` (
   `SEC_CODE` varchar(1) NOT NULL,
-  `SEC_LIBELLE` varchar(15) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `SEC_LIBELLE` varchar(15) DEFAULT NULL,
+  PRIMARY KEY (`SEC_CODE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Déchargement des données de la table `secteur`
@@ -599,10 +687,12 @@ INSERT INTO `secteur` (`SEC_CODE`, `SEC_LIBELLE`) VALUES
 -- Structure de la table `specialite`
 --
 
-CREATE TABLE `specialite` (
+DROP TABLE IF EXISTS `specialite`;
+CREATE TABLE IF NOT EXISTS `specialite` (
   `SPE_CODE` varchar(5) NOT NULL,
-  `SPE_LIBELLE` varchar(150) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `SPE_LIBELLE` varchar(150) DEFAULT NULL,
+  PRIMARY KEY (`SPE_CODE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Déchargement des données de la table `specialite`
@@ -660,13 +750,15 @@ INSERT INTO `specialite` (`SPE_CODE`, `SPE_LIBELLE`) VALUES
 -- Structure de la table `switchboard items`
 --
 
-CREATE TABLE `switchboard items` (
-  `SwitchboardID` int(11) NOT NULL,
-  `ItemNumber` int(11) NOT NULL DEFAULT 0,
+DROP TABLE IF EXISTS `switchboard items`;
+CREATE TABLE IF NOT EXISTS `switchboard items` (
+  `SwitchboardID` int NOT NULL,
+  `ItemNumber` int NOT NULL DEFAULT '0',
   `ItemText` varchar(255) DEFAULT NULL,
-  `Command` int(11) DEFAULT NULL,
-  `Argument` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `Command` int DEFAULT NULL,
+  `Argument` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`SwitchboardID`,`ItemNumber`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Déchargement des données de la table `switchboard items`
@@ -686,12 +778,16 @@ INSERT INTO `switchboard items` (`SwitchboardID`, `ItemNumber`, `ItemText`, `Com
 -- Structure de la table `travailler`
 --
 
-CREATE TABLE `travailler` (
+DROP TABLE IF EXISTS `travailler`;
+CREATE TABLE IF NOT EXISTS `travailler` (
   `VIS_MATRICULE` varchar(10) NOT NULL,
   `JJMMAA` datetime NOT NULL,
   `REG_CODE` varchar(2) NOT NULL,
-  `TRA_ROLE` varchar(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `TRA_ROLE` varchar(11) DEFAULT NULL,
+  PRIMARY KEY (`JJMMAA`,`VIS_MATRICULE`,`REG_CODE`),
+  KEY `VIS_MATRICULE` (`VIS_MATRICULE`),
+  KEY `REG_CODE` (`REG_CODE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Déchargement des données de la table `travailler`
@@ -789,11 +885,13 @@ INSERT INTO `travailler` (`VIS_MATRICULE`, `JJMMAA`, `REG_CODE`, `TRA_ROLE`) VAL
 -- Structure de la table `type_frais`
 --
 
-CREATE TABLE `type_frais` (
-  `tf_code` int(11) NOT NULL,
-  `tf_libelle` varchar(50) NOT NULL,
-  `tf_forfait` float NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+DROP TABLE IF EXISTS `type_frais`;
+CREATE TABLE IF NOT EXISTS `type_frais` (
+  `tf_code` int NOT NULL AUTO_INCREMENT,
+  `tf_libelle` varchar(50) COLLATE utf8mb3_bin NOT NULL,
+  `tf_forfait` float NOT NULL,
+  PRIMARY KEY (`tf_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 
 -- --------------------------------------------------------
 
@@ -801,10 +899,13 @@ CREATE TABLE `type_frais` (
 -- Structure de la table `type_individu`
 --
 
-CREATE TABLE `type_individu` (
+DROP TABLE IF EXISTS `type_individu`;
+CREATE TABLE IF NOT EXISTS `type_individu` (
   `TIN_CODE` varchar(5) NOT NULL,
-  `TIN_LIBELLE` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `TIN_LIBELLE` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`TIN_CODE`),
+  KEY `TIN_CODE` (`TIN_CODE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -812,11 +913,13 @@ CREATE TABLE `type_individu` (
 -- Structure de la table `type_praticien`
 --
 
-CREATE TABLE `type_praticien` (
+DROP TABLE IF EXISTS `type_praticien`;
+CREATE TABLE IF NOT EXISTS `type_praticien` (
   `TYP_CODE` varchar(3) NOT NULL,
   `TYP_LIBELLE` varchar(25) DEFAULT NULL,
-  `TYP_LIEU` varchar(35) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `TYP_LIEU` varchar(35) DEFAULT NULL,
+  PRIMARY KEY (`TYP_CODE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Déchargement des données de la table `type_praticien`
@@ -835,7 +938,8 @@ INSERT INTO `type_praticien` (`TYP_CODE`, `TYP_LIBELLE`, `TYP_LIEU`) VALUES
 -- Structure de la table `visiteur`
 --
 
-CREATE TABLE `visiteur` (
+DROP TABLE IF EXISTS `visiteur`;
+CREATE TABLE IF NOT EXISTS `visiteur` (
   `VIS_MATRICULE` varchar(10) NOT NULL,
   `VIS_NOM` varchar(25) DEFAULT NULL,
   `Vis_PRENOM` varchar(50) DEFAULT NULL,
@@ -844,8 +948,10 @@ CREATE TABLE `visiteur` (
   `VIS_VILLE` varchar(30) DEFAULT NULL,
   `VIS_DATEEMBAUCHE` datetime DEFAULT NULL,
   `SEC_CODE` varchar(1) DEFAULT NULL,
-  `LAB_CODE` varchar(2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `LAB_CODE` varchar(2) NOT NULL,
+  PRIMARY KEY (`VIS_MATRICULE`),
+  KEY `SEC_CODE` (`SEC_CODE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Déchargement des données de la table `visiteur`
@@ -923,283 +1029,6 @@ INSERT INTO `visiteur` (`VIS_MATRICULE`, `VIS_NOM`, `Vis_PRENOM`, `VIS_ADRESSE`,
 ('t55', 'Tréhet', 'Alain', '7D chem Barral', '12000', 'RODEZ', '1994-11-29 00:00:00', NULL, 'SW'),
 ('t60', 'Tusseau', 'Josselin', '63 r Bon Repos', '28000', 'CHARTRES', '1991-03-29 00:00:00', NULL, 'GY'),
 ('zzz', 'swiss', 'bourdin', NULL, NULL, NULL, '2003-06-18 00:00:00', NULL, 'BC');
-
---
--- Index pour les tables déchargées
---
-
---
--- Index pour la table `activite_compl`
---
-ALTER TABLE `activite_compl`
-  ADD PRIMARY KEY (`AC_NUM`);
-
---
--- Index pour la table `composant`
---
-ALTER TABLE `composant`
-  ADD PRIMARY KEY (`CMP_CODE`);
-
---
--- Index pour la table `compte`
---
-ALTER TABLE `compte`
-  ADD PRIMARY KEY (`id_Co`),
-  ADD KEY `fk_compte` (`mat_vis`);
-
---
--- Index pour la table `constituer`
---
-ALTER TABLE `constituer`
-  ADD PRIMARY KEY (`MED_DEPOTLEGAL`,`CMP_CODE`),
-  ADD KEY `MED_DEPOTLEGAL` (`MED_DEPOTLEGAL`),
-  ADD KEY `CMP_CODE` (`CMP_CODE`);
-
---
--- Index pour la table `date`
---
-ALTER TABLE `date`
-  ADD PRIMARY KEY (`JJMMAA`);
-
---
--- Index pour la table `departement`
---
-ALTER TABLE `departement`
-  ADD PRIMARY KEY (`dep_code`);
-
---
--- Index pour la table `dosage`
---
-ALTER TABLE `dosage`
-  ADD PRIMARY KEY (`DOS_CODE`);
-
---
--- Index pour la table `famille`
---
-ALTER TABLE `famille`
-  ADD PRIMARY KEY (`FAM_CODE`);
-
---
--- Index pour la table `fiche_frais`
---
-ALTER TABLE `fiche_frais`
-  ADD PRIMARY KEY (`vis_matricule`,`ff_mois`);
-
---
--- Index pour la table `formuler`
---
-ALTER TABLE `formuler`
-  ADD PRIMARY KEY (`MED_DEPOTLEGAL`,`PRE_CODE`),
-  ADD KEY `MED_DEPOTLEGAL` (`MED_DEPOTLEGAL`),
-  ADD KEY `PRE_CODE` (`PRE_CODE`);
-
---
--- Index pour la table `grade`
---
-ALTER TABLE `grade`
-  ADD PRIMARY KEY (`id_Grade`);
-
---
--- Index pour la table `inclure`
---
-ALTER TABLE `inclure`
-  ADD PRIMARY KEY (`vis_matricule`,`ff_mois`,`tf_code`),
-  ADD KEY `inclure_type_frais1_FK` (`tf_code`);
-
---
--- Index pour la table `interagir`
---
-ALTER TABLE `interagir`
-  ADD PRIMARY KEY (`MED_PERTURBATEUR`,`MED_MED_PERTURBE`),
-  ADD KEY `MED_MED_PERTURBE` (`MED_MED_PERTURBE`),
-  ADD KEY `MED_PERTURBATEUR` (`MED_PERTURBATEUR`);
-
---
--- Index pour la table `inviter`
---
-ALTER TABLE `inviter`
-  ADD PRIMARY KEY (`AC_NUM`,`PRA_NUM`),
-  ADD KEY `AC_NUM` (`AC_NUM`),
-  ADD KEY `PRA_NUM` (`PRA_NUM`);
-
---
--- Index pour la table `medicament`
---
-ALTER TABLE `medicament`
-  ADD PRIMARY KEY (`MED_DEPOTLEGAL`),
-  ADD KEY `FAM_CODE` (`FAM_CODE`);
-
---
--- Index pour la table `motif`
---
-ALTER TABLE `motif`
-  ADD PRIMARY KEY (`id_motif`);
-
---
--- Index pour la table `offrir`
---
-ALTER TABLE `offrir`
-  ADD PRIMARY KEY (`VIS_MATRICULE`,`RAP_NUM`,`MED_DEPOTLEGAL`),
-  ADD KEY `MED_DEPOTLEGAL` (`MED_DEPOTLEGAL`),
-  ADD KEY `VIS_MATRICULE` (`VIS_MATRICULE`,`RAP_NUM`);
-
---
--- Index pour la table `posseder`
---
-ALTER TABLE `posseder`
-  ADD PRIMARY KEY (`PRA_NUM`,`SPE_CODE`),
-  ADD KEY `PRA_NUM` (`PRA_NUM`),
-  ADD KEY `SPE_CODE` (`SPE_CODE`);
-
---
--- Index pour la table `praticien`
---
-ALTER TABLE `praticien`
-  ADD PRIMARY KEY (`PRA_NUM`),
-  ADD KEY `TYP_CODE` (`TYP_CODE`);
-
---
--- Index pour la table `prescrire`
---
-ALTER TABLE `prescrire`
-  ADD PRIMARY KEY (`MED_DEPOTLEGAL`,`TIN_CODE`,`DOS_CODE`),
-  ADD KEY `MED_DEPOTLEGAL` (`MED_DEPOTLEGAL`),
-  ADD KEY `TIN_CODE` (`TIN_CODE`),
-  ADD KEY `DOS_CODE` (`DOS_CODE`);
-
---
--- Index pour la table `presentation`
---
-ALTER TABLE `presentation`
-  ADD PRIMARY KEY (`PRE_CODE`);
-
---
--- Index pour la table `presente`
---
-ALTER TABLE `presente`
-  ADD PRIMARY KEY (`id`);
-
---
--- Index pour la table `rapport_visite`
---
-ALTER TABLE `rapport_visite`
-  ADD PRIMARY KEY (`VIS_MATRICULE`,`RAP_NUM`),
-  ADD KEY `PRA_NUM` (`PRA_NUM`),
-  ADD KEY `VIS_MATRICULE` (`VIS_MATRICULE`),
-  ADD KEY `RAP_NUM` (`RAP_NUM`);
-
---
--- Index pour la table `realiser`
---
-ALTER TABLE `realiser`
-  ADD PRIMARY KEY (`AC_NUM`,`VIS_MATRICULE`),
-  ADD KEY `AC_NUM` (`AC_NUM`),
-  ADD KEY `VIS_MATRICULE` (`VIS_MATRICULE`);
-
---
--- Index pour la table `region`
---
-ALTER TABLE `region`
-  ADD PRIMARY KEY (`REG_CODE`),
-  ADD KEY `SEC_CODE` (`SEC_CODE`);
-
---
--- Index pour la table `secteur`
---
-ALTER TABLE `secteur`
-  ADD PRIMARY KEY (`SEC_CODE`);
-
---
--- Index pour la table `specialite`
---
-ALTER TABLE `specialite`
-  ADD PRIMARY KEY (`SPE_CODE`);
-
---
--- Index pour la table `switchboard items`
---
-ALTER TABLE `switchboard items`
-  ADD PRIMARY KEY (`SwitchboardID`,`ItemNumber`);
-
---
--- Index pour la table `travailler`
---
-ALTER TABLE `travailler`
-  ADD PRIMARY KEY (`JJMMAA`,`VIS_MATRICULE`,`REG_CODE`),
-  ADD KEY `VIS_MATRICULE` (`VIS_MATRICULE`),
-  ADD KEY `REG_CODE` (`REG_CODE`);
-
---
--- Index pour la table `type_frais`
---
-ALTER TABLE `type_frais`
-  ADD PRIMARY KEY (`tf_code`);
-
---
--- Index pour la table `type_individu`
---
-ALTER TABLE `type_individu`
-  ADD PRIMARY KEY (`TIN_CODE`),
-  ADD KEY `TIN_CODE` (`TIN_CODE`);
-
---
--- Index pour la table `type_praticien`
---
-ALTER TABLE `type_praticien`
-  ADD PRIMARY KEY (`TYP_CODE`);
-
---
--- Index pour la table `visiteur`
---
-ALTER TABLE `visiteur`
-  ADD PRIMARY KEY (`VIS_MATRICULE`),
-  ADD KEY `SEC_CODE` (`SEC_CODE`);
-
---
--- AUTO_INCREMENT pour les tables déchargées
---
-
---
--- AUTO_INCREMENT pour la table `activite_compl`
---
-ALTER TABLE `activite_compl`
-  MODIFY `AC_NUM` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT pour la table `compte`
---
-ALTER TABLE `compte`
-  MODIFY `id_Co` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
--- AUTO_INCREMENT pour la table `grade`
---
-ALTER TABLE `grade`
-  MODIFY `id_Grade` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT pour la table `motif`
---
-ALTER TABLE `motif`
-  MODIFY `id_motif` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT pour la table `presente`
---
-ALTER TABLE `presente`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
-
---
--- AUTO_INCREMENT pour la table `rapport_visite`
---
-ALTER TABLE `rapport_visite`
-  MODIFY `RAP_NUM` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=157;
-
---
--- AUTO_INCREMENT pour la table `type_frais`
---
-ALTER TABLE `type_frais`
-  MODIFY `tf_code` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Contraintes pour les tables déchargées
