@@ -1,5 +1,5 @@
 <?php
-// contrôleur qui gère les enfants et les familles
+
 
 
 if (!isset($_REQUEST['action']))
@@ -68,9 +68,9 @@ switch($action)
 
 	case 'insertCompte':
 		{
-			// Assurez-vous que le formulaire a été soumis
+			
 			if ($_SERVER["REQUEST_METHOD"] == "POST") {
-				// Récupérez les valeurs du formulaire
+				// Récupére les valeurs du formulaire
 				$crea_mat = $_POST['crea_nom'];
 				$crea_mail = $_POST['crea_mail'];
 				$crea_grade = $_POST['crea_grade'];
@@ -80,27 +80,27 @@ switch($action)
 					// Connexion à la base de données
 					$monPdo = connexionPDO();
 					
-					// Préparez la requête SQL avec des paramètres
+					// Prépare la requête SQL avec des paramètres
 					$sql = 'INSERT INTO compte (MDP_CO, MAIL_CO, GRADE, MAT_VIS) VALUES (?, ?, ?, ?)';
 					$stmt = $monPdo->prepare($sql);
 					
-					// Liez les valeurs aux paramètres dans la requête
+					// Lie les valeurs aux paramètres dans la requête
 					$stmt->bindParam(1, $crea_mdp);
 					$stmt->bindParam(2, $crea_mail);
 					$stmt->bindParam(3, $crea_grade);
 					$stmt->bindParam(4, $crea_mat);
 					
-					// Exécutez la requête
+					// Exécute la requête
 					$stmt->execute();
 					
-					// Vérifiez si l'insertion a réussi
+					// Vérifie si l'insertion a réussi
 					if ($stmt->rowCount() > 0) {
 						echo "Insertion réussie.";
 					} else {
 						echo "Erreur lors de l'insertion.";
 					}
 				} catch (PDOException $e) {
-					// En cas d'erreur, affichez le message d'erreur
+					// En cas d'erreur, affiche le message d'erreur
 					print "Erreur !: " . $e->getMessage();
 					die();
 				}

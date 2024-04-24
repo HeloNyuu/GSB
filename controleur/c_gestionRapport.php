@@ -87,11 +87,9 @@ switch($action)
 		if ($dateVis == '') {
 			$dateIncorrecte = "Veuillez saisir une date";
 			include("vues/v_rapportVis.php");
-			break;
+		
 		}
 		
-
-	
 
 		$session= $_COOKIE['connexion']; 
 		$misMat=getVisMatConnecte($session);

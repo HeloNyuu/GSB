@@ -25,11 +25,6 @@ switch($uc)
         include("controleur/c_ConnexionGsb.php");
     }
     break;
-    case 'deconnexion' :
-        {
-            include("controleur/c_ConnexionGsb.php");
-        }
-        break;
 
     case 'rapport' : 
         { 
